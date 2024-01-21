@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
               ],
               home: const MyHomePage(title: 'Weather App'),
-            );   
+            );
           },
     );
   }
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  final String title;
+  const String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -55,11 +55,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   WeatherResponse? _response;
 
+  String getIconUrl(WeatherInfo weatherInfo) {
+    return 'https://openweathermap.org/img/wn/${weatherInfo.icon}@2x.png';
+  }
 
-  void search() async {
-    final response = await dataService.getWeather(cityTextController.text, context);
-
-    setState(() => _response = response);
+  Future<void> search() async {
+    try {
+      final response = await dataService.getWeather(cityTextController.text, context);
+      setState(() => _response = response);
+    } catch (e) {
+      print('error: $e');
+    }
   }
 
   @override
@@ -81,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: const TextStyle(fontSize: 40),
                   ),
                   Text(_response!.weatherInfo.description),
-                  Image.network(_response!.iconUrl),
+                  Image.network(getIconUrl(_response!.weatherInfo)),
                 ],
               ),
             Padding(

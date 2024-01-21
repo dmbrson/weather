@@ -30,25 +30,9 @@ class WeatherResponse {
   final TemperatureInfo tempInfo;
   final WeatherInfo weatherInfo;
 
-  String get iconUrl {
-    return 'https://openweathermap.org/img/wn/${weatherInfo.icon}@2x.png';
-  }
-
   WeatherResponse({
     required this.cityName,
     required this.tempInfo,
     required this.weatherInfo
   });
-
-  factory WeatherResponse.fromJson(Map<String, dynamic> json) {
-    final cityName = json['name'];
-
-    final tempInfoJson = json['main'];
-    final tempInfo = TemperatureInfo.fromJson(tempInfoJson);
-
-    final weatherInfoJson = json['weather'][0];
-    final weatherInfo = WeatherInfo.fromJson(weatherInfoJson);
-
-    return WeatherResponse(cityName: cityName, tempInfo: tempInfo, weatherInfo: weatherInfo);
-  }
 }
